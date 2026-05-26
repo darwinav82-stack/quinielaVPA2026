@@ -17,25 +17,44 @@ export default function Login({ onLoginSuccess }) {
     setError("");
     setLoading(true);
 
-    try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: username.trim(), password })
-      });
+    const API = import.meta.env.VITE_API_URL;
 
-      const data = await response.json();
+try {
+  const response = await fetch(`${API}/api/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      username: username.trim(),
+      password
+    })
+  });
 
-      if (!response.ok) {
-        throw new Error(data.message || "Error al iniciar sesión.");
-      }
+  // Ver respuesta como texto primero
+  const text = await response.text();
 
-      onLoginSuccess(data.token, data.user);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+  // Intentar convertir a JSON
+  let data;
+
+  try {
+    data = JSON.parse(text);
+  } catch {
+    throw new Error("El servidor devolvió una respuesta inválida.");
+  }
+
+  if (!response.ok) {
+    throw new Error(data.message || "Error al iniciar sesión.");
+  }
+
+  onLoginSuccess(data.token, data.user);
+
+} catch (err) {
+  setError(err.message);
+
+} finally {
+  setLoading(false);
+}
   };
 
   return (
