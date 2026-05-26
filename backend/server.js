@@ -442,11 +442,11 @@ async function runAutoSync() {
 }
 
 // Serve static files from React build in production
-const distPath = path.join(__dirname, "../frontend/dist");
-app.use(express.static(distPath));
+//const distPath = path.join(__dirname, "../frontend/dist");
+//app.use(express.static(distPath));
 
 // Fallback all non-API GET requests to index.html for React routing
-app.get("*", (req, res, next) => {
+/*app.get("*", (req, res, next) => {
   if (req.path.startsWith("/api")) {
     return next();
   }
@@ -456,6 +456,13 @@ app.get("*", (req, res, next) => {
   } else {
     res.status(200).send("<h3>Quiniela VPA Backend is Running.</h3><p>Para ver el frontend, asegúrate de compilarlo con 'npm run build' en la carpeta frontend.</p>");
   }
+});
+*/
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "Quiniela Backend API Running"
+  });
 });
 
 // Run auto-sync every 15 seconds
