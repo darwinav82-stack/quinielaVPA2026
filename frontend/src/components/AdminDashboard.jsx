@@ -30,7 +30,9 @@ export default function AdminDashboard({ token }) {
     setUsersLoading(true);
     setUserError("");
     try {
-      const response = await fetch("/api/users", {
+      const API = import.meta.env.VITE_API_URL;
+
+      const response = await fetch(`${API}/api/users`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const data = await response.json();
@@ -48,7 +50,9 @@ export default function AdminDashboard({ token }) {
     setMatchesLoading(true);
     setMatchError("");
     try {
-      const response = await fetch("/api/matches", {
+      const API = import.meta.env.VITE_API_URL;
+
+      const response = await fetch(`${API}/api/matches`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const data = await response.json();
@@ -91,7 +95,9 @@ export default function AdminDashboard({ token }) {
     setGeneratedPassword("");
 
     try {
-      const response = await fetch("/api/users", {
+      const API = import.meta.env.VITE_API_URL;
+
+      const response = await fetch(`${API}/api/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -120,7 +126,9 @@ export default function AdminDashboard({ token }) {
     const sa = scoreAwayInputs[matchId] !== undefined ? parseInt(scoreAwayInputs[matchId], 10) : 0;
 
     try {
-      const response = await fetch(`/api/matches/${matchId}/simulate`, {
+      const API = import.meta.env.VITE_API_URL;
+
+      const response = await fetch(`${API}/api/matches/${matchId}/simulate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -151,7 +159,9 @@ export default function AdminDashboard({ token }) {
     setMatchesLoading(true);
     setMatchError("");
     try {
-      const response = await fetch("/api/matches/sync", {
+      const API = import.meta.env.VITE_API_URL;
+
+      const response = await fetch(`${API}/api/matches/sync`, {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}` }
       });

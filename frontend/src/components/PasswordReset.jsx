@@ -29,7 +29,9 @@ export default function PasswordReset({ token, onPasswordChanged }) {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/change-password", {
+      const API = import.meta.env.VITE_API_URL;
+
+      const response = await fetch(`${API}/api/auth/change-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

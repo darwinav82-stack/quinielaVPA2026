@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Save, Lock, AlertCircle, RefreshCw, CheckCircle2 } from "lucide-react";
-
+const API = import.meta.env.VITE_API_URL;
 export default function UserDashboard({ token }) {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +20,7 @@ export default function UserDashboard({ token }) {
   const fetchMatches = async (showLoading = true) => {
     if (showLoading) setLoading(true);
     try {
-      const response = await fetch("/api/matches", {
+      const response = await fetch(`${API}/api/matches`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -82,7 +82,7 @@ export default function UserDashboard({ token }) {
     setError("");
 
     try {
-      const response = await fetch("/api/predictions", {
+      const response = await fetch(`${API}/api/predictions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

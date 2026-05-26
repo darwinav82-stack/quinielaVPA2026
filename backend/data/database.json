@@ -7,14 +7,6 @@
       "role": "admin",
       "mustChangePassword": false,
       "totalPoints": 0
-    },
-    {
-      "id": "user_1779757000844",
-      "username": "DarwinA",
-      "passwordHash": "$2a$10$jsfuRLfTHCcvW1BAaxvWs.Om/DtZBbAdEz5i5bAWSbB7INHAtgrXm",
-      "role": "user",
-      "mustChangePassword": false,
-      "totalPoints": 0
     }
   ],
   "matches": [

@@ -7,25 +7,38 @@ export default function Leaderboard({ token }) {
   const [error, setError] = useState("");
 
   const fetchLeaderboard = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const response = await fetch("/api/leaderboard", {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Error al obtener ranking.");
+
+  setLoading(true);
+  setError("");
+
+  try {
+
+    const API = import.meta.env.VITE_API_URL;
+
+    const response = await fetch(`${API}/api/leaderboard`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-      setLeaderboard(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Error al obtener ranking.");
     }
-  };
+
+    setLeaderboard(data);
+
+  } catch (err) {
+
+    setError(err.message);
+
+  } finally {
+
+    setLoading(false);
+
+  }
+};
 
   useEffect(() => {
     fetchLeaderboard();
