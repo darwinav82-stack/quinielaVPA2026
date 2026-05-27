@@ -333,27 +333,27 @@ export default function AdminDashboard({ token }) {
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
   
-                      <div style={{ fontWeight: 800, color: "var(--primary-gold)" }}>
-                        {u.totalPoints} pts
-                      </div>
-
-                      <button
-                        onClick={() => handleDeleteUser(u.id)}
-                        style={{
-                          background: "#dc2626",
-                          color: "white",
-                          border: "none",
-                          padding: "6px 10px",
-                          borderRadius: "6px",
-                          cursor: "pointer",
-                          fontSize: "0.75rem",
-                          fontWeight: 700
-                        }}
-                      >
-                        Eliminar
-                      </button>
-
+                    <div style={{ fontWeight: 800, color: "var(--primary-gold)" }}>
+                      {u.totalPoints} pts
                     </div>
+
+                    <button
+                      onClick={() => handleDeleteUser(u.id)}
+                      style={{
+                        background: "#dc2626",
+                        color: "white",
+                        border: "none",
+                        padding: "6px 10px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        fontSize: "0.75rem",
+                        fontWeight: 700
+                      }}
+                    >
+                      Eliminar
+                    </button>
+
+                  </div>
                   </div>
                 ))}
               </div>
