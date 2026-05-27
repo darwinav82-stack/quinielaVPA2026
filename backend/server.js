@@ -261,6 +261,45 @@ app.post("/api/users", authenticateToken, requireAdmin, (req, res) => {
   });
 });
 
+// 4.1 Admin: Delete User
+app.delete("/api/users/:id", authenticateToken, requireAdmin, (req, res) => {
+
+  const { id } = req.params;
+
+  const db = readDb();
+
+  // Buscar usuario
+  const user = db.users.find((u) => u.id === id);
+
+  if (!user) {
+    return res.status(404).json({
+      message: "Usuario no encontrado."
+    });
+  }
+
+  // Evitar eliminar admin principal
+  if (user.role === "admin") {
+    return res.status(400).json({
+      message: "No se puede eliminar el administrador principal."
+    });
+  }
+
+  // Eliminar usuario
+  db.users = db.users.filter((u) => u.id !== id);
+
+  // Eliminar predicciones asociadas
+  db.predictions = db.predictions.filter(
+    (p) => p.userId !== id
+  );
+
+  writeDb(db);
+
+  res.json({
+    message: "Usuario eliminado correctamente."
+  });
+
+});
+
 // 5. General: Get matches (attaches authenticated user's prediction if logged in)
 app.get("/api/matches", authenticateToken, (req, res) => {
   const db = readDb();

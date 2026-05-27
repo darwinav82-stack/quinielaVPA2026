@@ -117,6 +117,47 @@ export default function AdminDashboard({ token }) {
     }
   };
 
+  const handleDeleteUser = async (userId) => {
+
+    const confirmDelete = window.confirm(
+      "¿Seguro que deseas eliminar este usuario?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+
+      const API = import.meta.env.VITE_API_URL;
+
+      const response = await fetch(
+        `${API}/api/users/${userId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Error eliminando usuario."
+        );
+      }
+
+      fetchUsers();
+
+      alert("Usuario eliminado correctamente.");
+
+    } catch (err) {
+
+      alert(err.message);
+
+    }
+  };
+
   // Handle Match Simulation Action
   const handleMatchSimulation = async (matchId, action) => {
     setActionInProgress(prev => ({ ...prev, [matchId]: true }));
@@ -290,7 +331,29 @@ export default function AdminDashboard({ token }) {
                         )}
                       </div>
                     </div>
-                    <div style={{ fontWeight: 800, color: "var(--primary-gold)" }}>{u.totalPoints} pts</div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+  
+                      <div style={{ fontWeight: 800, color: "var(--primary-gold)" }}>
+                        {u.totalPoints} pts
+                      </div>
+
+                      <button
+                        onClick={() => handleDeleteUser(u.id)}
+                        style={{
+                          background: "#dc2626",
+                          color: "white",
+                          border: "none",
+                          padding: "6px 10px",
+                          borderRadius: "6px",
+                          cursor: "pointer",
+                          fontSize: "0.75rem",
+                          fontWeight: 700
+                        }}
+                      >
+                        Eliminar
+                      </button>
+
+                    </div>
                   </div>
                 ))}
               </div>
