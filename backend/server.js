@@ -242,6 +242,7 @@ app.post("/api/users", authenticateToken, requireAdmin, (req, res) => {
     passwordHash,
     role: "user",
     mustChangePassword: true, // Forced reset on first login
+    notificationsEnabled: true,
     totalPoints: 0
   };
 
@@ -296,6 +297,34 @@ app.delete("/api/users/:id", authenticateToken, requireAdmin, (req, res) => {
 
   res.json({
     message: "Usuario eliminado correctamente."
+  });
+
+});
+
+// 4.2 Admin: notificacion User
+app.put("/api/users/notifications", authenticateToken, (req, res) => {
+
+  const { enabled } = req.body;
+
+  const db = readDb();
+
+  const userIndex = db.users.findIndex(
+    (u) => u.id === req.user.id
+  );
+
+  if (userIndex === -1) {
+    return res.status(404).json({
+      message: "Usuario no encontrado."
+    });
+  }
+
+  db.users[userIndex].notificationsEnabled = enabled;
+
+  writeDb(db);
+
+  res.json({
+    message: "Preferencia actualizada.",
+    notificationsEnabled: enabled
   });
 
 });

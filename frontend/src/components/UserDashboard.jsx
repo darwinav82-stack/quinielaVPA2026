@@ -71,6 +71,32 @@ export default function UserDashboard({ token }) {
     }));
   };
 
+const handleToggleNotifications = async () => {
+
+  const newValue = !notificationsEnabled;
+
+  const response = await fetch(
+    `${API}/api/users/notifications`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        enabled: newValue
+      })
+    }
+  );
+
+  if (response.ok) {
+
+    setNotificationsEnabled(newValue);
+
+  }
+
+};
+
   const handleSavePrediction = async (matchId) => {
     const pred = editedPredictions[matchId];
     if (!pred || pred.scoreHome === undefined || pred.scoreAway === undefined || pred.scoreHome === "" || pred.scoreAway === "") {
@@ -116,6 +142,40 @@ export default function UserDashboard({ token }) {
       setSavingMatches((prev) => ({ ...prev, [matchId]: false }));
     }
   };
+
+  useEffect(() => {
+
+  if ("Notification" in window) {
+
+    Notification.requestPermission();
+
+  }
+
+}, []);
+
+setInterval(() => {
+
+  matches.forEach((match) => {
+
+    const matchDate = new Date(match.date);
+
+    const diff =
+      matchDate.getTime() - Date.now();
+
+    const minutes = Math.floor(diff / 60000);
+
+    if (minutes <= 10 && minutes > 9) {
+
+      showNotification(
+        "⚽ Partido próximo",
+        `${match.teamHome} vs ${match.teamAway} inicia en 10 minutos.`
+      );
+
+    }
+
+  });
+
+}, 30000);
 
   // Filter logic
   const filteredMatches = matches.filter((match) => {
@@ -166,6 +226,14 @@ export default function UserDashboard({ token }) {
 
   return (
     <div>
+      <label>
+        <input
+          type="checkbox"
+          checked={notificationsEnabled}
+          onChange={handleToggleNotifications}
+        />
+        Activar Notificaciones
+      </label>
       {/* Filters Section */}
       <div style={{ marginBottom: "20px" }}>
         <div className="horizontal-tabs">
